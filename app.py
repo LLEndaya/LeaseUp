@@ -12,9 +12,9 @@ db = SQLAlchemy()
 def create_app(test_config=None):
     """Initialize and configure the Flask application with database and authentication."""
     app = Flask(__name__, instance_relative_config=True)
-    # Determine database path: prefer existing database/leaseup.db, otherwise use instance/leaseup.db
-    instance_db = os.path.join(app.instance_path, 'leaseup.db')
-    alt_db = os.path.join(BASE_DIR, 'database', 'leaseup.db')
+    # Determine database path: prefer existing database/schema.sql, otherwise use instance/schema.sql
+    instance_db = os.path.join(app.instance_path, 'schema.sql')
+    alt_db = os.path.join(BASE_DIR, 'database', 'schema.sql')
     if os.path.exists(alt_db):
         db_file = alt_db
     else:
