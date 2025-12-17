@@ -1,0 +1,349 @@
+{% extends 'base.html' %}
+{% block page_styles %}
+  <link rel="stylesheet" href="/static/dashboard.css">
+{% endblock %}
+{% block content %}
+  {% if is_admin %}
+    <!-- Unified Dashboard (Admin) - same interface as tenant browsing + admin-only sections -->
+    <div class="dashboard-header">
+      <h1>📊 Dashboard</h1>
+      <p>Property management and booking overview</p>
+    </div>
+
+    {% set room_images = ['apt1.jpg', 'apt2.jpg', 'apt3.jpg', 'apt4.jpg'] %}
+    <div class="units-grid">
+      {% for u in units %}
+        {% set room_num = (u.id - 1) % 4 %}
+        {% set is_vacant = (u.status == 'vacant') %}
+        {% set occ_name = unit_tenants.get(u.id, '') if unit_tenants else '' %}
+        {% set admin_display = occ_name %}
+        <div class="unit-card {{ 'clickable' if is_vacant else 'preview' }}" {% if is_vacant %}onclick="showRoomDetailsModal({{ u.id }}, '{{ u.number }}', '{{ room_images[room_num] }}', '{{ u.property.name if u.property else 'Unknown' }}', '{{ u.property.address if u.property else 'TBD' }}', {{ unit_latest_rent.get(u.id, 0) }}, false, true, '{{ admin_display }}')"{% else %}onclick="showRoomDetailsModal({{ u.id }}, '{{ u.number }}', '{{ room_images[room_num] }}', '{{ u.property.name if u.property else 'Unknown' }}', '{{ u.property.address if u.property else 'TBD' }}', 0, false, true, '{{ admin_display }}')"{% endif %}>
+          <div class="unit-image-wrapper">
+            <img src="/static/images/{{ room_images[room_num] }}" alt="{{ u.number }}" class="unit-image">
+            <div class="unit-status-overlay">{% if is_vacant %}✅ Available{% else %}🔒 Occupied (Preview){% endif %}</div>
+          </div>
+          <div class="unit-info">
+            <h3>{{ u.number }}</h3>
+            <div class="unit-meta">
+              <span class="property-name">🏢 {{ u.property.name if u.property else 'Unknown' }}</span>
+            </div>
+            {% if not is_vacant %}
+              {% set display_name = occ_name %}
+              {% if display_name %}
+                <div class="unit-tenant">👤 {{ display_name }}</div>
+              {% endif %}
+            {% endif %}
+            <div class="unit-price">
+              {% set rent = unit_latest_rent.get(u.id, 0) %}
+              {% if rent and is_vacant %}
+                <span class="price-display">₱{{ "%.2f"|format(rent) }}<span class="price-period">/month</span></span>
+              {% elif is_vacant %}
+                <span class="price-display">Contact for pricing</span>
+              {% else %}
+                <span class="price-display">—</span>
+              {% endif %}
+            </div>
+            <div class="unit-footer">
+              {% if is_vacant %}
+                <span class="view-details">View Details →</span>
+              {% else %}
+                <span class="view-details">Preview Only</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="dashboard-section">
+      <h3>👥 Active Tenants</h3>
+      <div class="info-card">
+        <p><strong>Total Tenants:</strong> {{ tenants|length }}</p>
+        <ul>
+          {% for t in tenants %}
+            {% if t.name and not t.name.startswith('AutoTenant') %}
+              <li>👤 {{ t.name }} — 📞 {{ t.phone }} — 📧 {{ t.email }}</li>
+            {% endif %}
+          {% else %}
+            <li>No tenants yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="dashboard-section">
+      <h3>⏰ Leases Expiring Soon (Next 30 Days)</h3>
+      <div class="info-card">
+        {% if upcoming %}
+          <ul>
+            {% for l in upcoming %}
+              <li>📋 Lease #{{ l.id }} — Unit {{ l.unit.number }} — Ends: {{ l.end_date }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No leases expiring soon.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="dashboard-section">
+      <h3>💳 Outstanding Balances</h3>
+      <div class="info-card">
+        <ul>
+          {% for b in balances %}
+            <li>
+              📊 Lease #{{ b.lease.id }} — Unit {{ b.lease.unit.number if b.lease.unit else b.lease.unit_id }}
+              <br/>💰 Balance: <strong>₱{{ '%.2f'|format(b.balance) }}</strong>
+              (Paid: ₱{{ '%.2f'|format(b.paid) }})
+            </li>
+          {% else %}
+            <li>All balances settled.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% else %}
+    <!-- TENANT VIEW - Apartment Browsing (includes occupied previews, no occupant details) -->
+    <div class="dashboard-header">
+      <h1>🏠 Explore Apartments</h1>
+      <p>Preview available and occupied units (occupied previews hide occupant details)</p>
+    </div>
+
+    {% if units %}
+      <div class="units-grid">
+        {% set room_images = ['apt1.jpg', 'apt2.jpg', 'apt3.jpg', 'apt4.jpg'] %}
+        {% for u in units %}
+          {% set room_num = (u.id - 1) % 4 %}
+          {% set is_vacant = (u.status == 'vacant') %}
+          {% set occ_name = unit_tenants.get(u.id, '') if unit_tenants else '' %}
+          <div class="unit-card {{ 'clickable' if is_vacant else 'preview' }}" {% if is_vacant %}onclick="showRoomDetailsModal({{ u.id }}, '{{ u.number }}', '{{ room_images[room_num] }}', '{{ u.property.name if u.property else 'Unknown' }}', '{{ u.property.address if u.property else 'TBD' }}', {{ unit_latest_rent.get(u.id, 0) }}, true, false, '')"{% else %}onclick="showRoomDetailsModal({{ u.id }}, '{{ u.number }}', '{{ room_images[room_num] }}', '{{ u.property.name if u.property else 'Unknown' }}', '{{ u.property.address if u.property else 'TBD' }}', 0, false, false, '{{ occ_name }}')"{% endif %}>
+            <div class="unit-image-wrapper">
+              <img src="/static/images/{{ room_images[room_num] }}" alt="{{ u.number }}" class="unit-image">
+              <div class="unit-status-overlay">{% if is_vacant %}✅ Available{% else %}🔒 Occupied (Preview){% endif %}</div>
+            </div>
+            <div class="unit-info">
+              <h3>{{ u.number }}</h3>
+              <div class="unit-meta">
+                <span class="property-name">🏢 {{ u.property.name if u.property else 'Unknown' }}</span>
+              </div>
+              {% if not is_vacant %}
+                {% set display_name = occ_name %}
+                {% if display_name %}
+                  <div class="unit-tenant">👤 {{ display_name }}</div>
+                {% endif %}
+              {% endif %}
+              <div class="unit-price">
+                {% set rent = unit_latest_rent.get(u.id, 0) %}
+                {% if rent and is_vacant %}
+                  <span class="price-display">₱{{ "%.2f"|format(rent) }}<span class="price-period">/month</span></span>
+                {% elif is_vacant %}
+                  <span class="price-display">Contact for pricing</span>
+                {% else %}
+                  <span class="price-display">—</span>
+                {% endif %}
+              </div>
+              <div class="unit-footer">
+                {% if is_vacant %}
+                  <span class="view-details">View Details →</span>
+                {% else %}
+                  <span class="view-details">Preview Only</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="no-units">
+        <p>📭 No units at the moment.</p>
+      </div>
+    {% endif %}
+
+    <!-- Room Details & Booking Modal (TENANT ONLY) -->
+    <div id="roomDetailsModal" class="modal room-modal" aria-hidden="true">
+      <div class="modal-backdrop" data-modal-close></div>
+      <div class="modal-panel room-details-panel" role="dialog" aria-modal="true">
+        <button class="modal-close" data-modal-close aria-label="Close">×</button>
+        
+        <div class="modal-content">
+          <div class="room-image-section">
+            <img id="modalRoomImage" src="" alt="Room" class="room-detail-image">
+          </div>
+          
+          <div class="room-info-section">
+            <h2 id="modalRoomTitle"></h2>
+            <div id="modalOccupantSection" style="display:none; margin-bottom:12px;">
+              <strong>👤 Occupant:</strong> <span id="modalOccupantName"></span>
+            </div>
+            <div class="room-info-grid">
+              <div class="info-item">
+                <span class="info-label">🏢 Property</span>
+                <span id="modalPropertyName" class="info-value"></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">📍 Location</span>
+                <span id="modalLocation" class="info-value"></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">💰 Monthly Rent</span>
+                <span id="modalRent" class="info-value rent-value"></span>
+              </div>
+            </div>
+
+            <div class="amenities-section">
+              <h4>✨ Amenities</h4>
+              <ul class="amenities-list">
+                <li>🛏️ Fully Furnished</li>
+                <li>💨 Air Conditioning</li>
+                <li>🚿 Private Bathroom</li>
+                <li>🌳 Garden Access</li>
+                <li>🔒 Security Features</li>
+                <li>📶 WiFi Compatible</li>
+              </ul>
+            </div>
+
+            <form id="bookingForm" method="post" action="/book-unit" class="booking-form">
+              <input type="hidden" id="unitId" name="unit_id">
+              
+              <h4>📅 Booking Details</h4>
+              <div class="form-group">
+                <label>Move-in Date:</label>
+                <input type="date" name="start_date" required class="form-input">
+              </div>
+              
+              <div class="form-group">
+                <label>Expected Move-out Date:</label>
+                <input type="date" name="end_date" required class="form-input">
+              </div>
+              
+              <div class="form-group">
+                <label>Special Requests or Questions:</label>
+                <textarea name="notes" placeholder="Tell us about any specific needs..." rows="3" class="form-input"></textarea>
+              </div>
+              
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-block">
+                  🔖 Submit Booking Request
+                </button>
+                <button type="button" class="btn btn-secondary btn-block" data-modal-close>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      #siteToast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        min-width: 260px;
+        max-width: 420px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        display: none;
+        align-items: center;
+        gap: 10px;
+        z-index: 1200;
+        color: #fff;
+        font-weight: 600;
+      }
+      #siteToast.show { display: flex; }
+      #siteToast.success { background: linear-gradient(90deg,#27ae60,#2ecc71); }
+      #siteToast.error { background: linear-gradient(90deg,#e74c3c,#ff6b6b); }
+      #siteToast .toast-close { margin-left: auto; cursor: pointer; opacity: 0.9; }
+    </style>
+
+    <div id="siteToast" role="status" aria-live="polite">
+      <div id="siteToastMessage"></div>
+      <div class="toast-close" id="siteToastClose">✕</div>
+    </div>
+
+    <script>
+      const roomModal = document.getElementById('roomDetailsModal');
+      if (!roomModal) {
+        console.error('Room modal not found');
+      } else {
+        const closeElements = roomModal.querySelectorAll('[data-modal-close]');
+
+        function openRoomModal() {
+          roomModal.classList.add('open');
+          roomModal.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeRoomModal() {
+          roomModal.classList.remove('open');
+          roomModal.setAttribute('aria-hidden', 'true');
+        }
+
+        closeElements.forEach(el => el.addEventListener('click', closeRoomModal));
+
+        window.showRoomDetailsModal = function(unitId, roomTitle, imagePath, propertyName, location, rent, isVacant, showOccupantDetails, occupantName) {
+          document.getElementById('unitId').value = unitId;
+          document.getElementById('modalRoomTitle').textContent = roomTitle;
+          document.getElementById('modalRoomImage').src = '/static/images/' + imagePath;
+          document.getElementById('modalPropertyName').textContent = propertyName;
+          document.getElementById('modalLocation').textContent = location;
+          document.getElementById('modalRent').textContent = (isVacant && rent) ? ('₱' + parseFloat(rent).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})) : '—';
+          // occupant name display (only shown when allowed)
+          const occSection = document.getElementById('modalOccupantSection');
+          const occNameEl = document.getElementById('modalOccupantName');
+          if (showOccupantDetails && occupantName) {
+            occNameEl.textContent = occupantName;
+            occSection.style.display = '';
+          } else {
+            occNameEl.textContent = '';
+            occSection.style.display = 'none';
+          }
+          // show booking form only for vacant units
+          const bookingForm = document.getElementById('bookingForm');
+          if (isVacant) {
+            bookingForm.style.display = '';
+          } else {
+            bookingForm.style.display = 'none';
+          }
+          openRoomModal();
+        };
+
+        // Toast utility
+        const toast = document.getElementById('siteToast');
+        const toastMsg = document.getElementById('siteToastMessage');
+        const toastClose = document.getElementById('siteToastClose');
+        let toastTimer = null;
+        function showToast(message, type='success', timeout=3500) {
+          toast.className = '';
+          toast.classList.add(type);
+          toastMsg.textContent = message;
+          toast.classList.add('show');
+          if (toastTimer) clearTimeout(toastTimer);
+          toastTimer = setTimeout(()=>{ toast.classList.remove('show'); }, timeout);
+        }
+        toastClose.addEventListener('click', ()=>{ toast.classList.remove('show'); });
+
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const formData = new FormData(this);
+          try {
+            const response = await fetch('/book-unit', {
+              method: 'POST',
+              body: formData
+            });
+            const data = await response.json();
+            if (response.ok && data.ok) {
+              showToast(data.message || 'Booking request submitted', 'success');
+              closeRoomModal();
+              // refresh after short delay so user sees toast
+              setTimeout(()=> location.reload(), 900);
+            } else {
+              showToast(data.message || 'Error submitting booking', 'error');
+            }
+          } catch(err) {
+            showToast('Server error: ' + (err.message || 'Unknown'), 'error');
+          }
+        });
+      }
+    </script>
+  {% endif %}
+{% endblock %}

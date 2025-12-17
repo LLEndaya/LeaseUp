@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{% if lease %}Edit{% else %}Create{% endif %} Lease</h2>
+  <form method="post">
+    <label>Unit:
+      <select name="unit_id">
+        {% for u in units %}
+          <option value="{{ u.id }}" {% if lease and lease.unit_id==u.id %}selected{% endif %}>{{ u.number }} ({{ u.status }})</option>
+        {% endfor %}
+      </select>
+    </label><br>
+    <label>Tenant:
+      <select name="tenant_id">
+        {% for t in tenants %}
+          <option value="{{ t.id }}" {% if lease and lease.tenant_id==t.id %}selected{% endif %}>{{ t.name }}</option>
+        {% endfor %}
+      </select>
+    </label><br>
+    <label>Start date: <input name="start_date" type="date" value="{{ lease.start_date if lease and lease.start_date else '' }}"></label><br>
+    <label>End date: <input name="end_date" type="date" value="{{ lease.end_date if lease and lease.end_date else '' }}"></label><br>
+    <label>Monthly rent: <input name="monthly_rent" type="number" step="0.01" value="{{ lease.monthly_rent if lease else '' }}"></label><br>
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}

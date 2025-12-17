@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="manage-section">
+    <h2>👥 Manage Tenants</h2>
+    <p><a class="btn btn-primary" href="/tenants/new">➕ Add New Tenant</a></p>
+    
+    <div class="data-table">
+      {% if tenants %}
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in tenants %}
+              <tr>
+                <td>👤 {{ t.name }}</td>
+                <td>📞 {{ t.phone }}</td>
+                <td>📧 {{ t.email }}</td>
+                <td class="actions-cell">
+                  <a class="btn btn-small" href="/tenants/{{ t.id }}/edit">✏️ Edit</a>
+                  <form action="/tenants/{{ t.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this tenant?');">
+                    <button type="submit" class="btn btn-danger btn-small">🗑️ Delete</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="empty-state">
+          <p>📭 No tenants found yet.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

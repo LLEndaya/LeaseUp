@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block page_styles %}
+  <link rel="stylesheet" href="/static/login.css">
+{% endblock %}
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <h2>Login / Sign up</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Log In</button>
+        </form>
+        <p style="margin-top: 20px; text-align: center;">
+            Don't have an account? <a href="{{ url_for('tenant_signup') }}">Sign up here</a>
+        </p>
+    </div>
+</div>
+
+<div style="text-align:center; margin-top:14px;">
+  <button type="button" class="btn admin-btn admin-trigger" id="adminBtn"> 
+    <img src="/static/images/admin.jpg" alt="Admin" class="admin-img-small">
+  </button>
+</div>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Emergency Lookup</h2>
+  <form method="get" action="/emergency">
+    <input name="q" placeholder="Enter unit or identifier" value="{{ q or '' }}">
+    <button type="submit">Search</button>
+  </form>
+
+  <ul>
+    {% for r in results %}
+      <li>{{ r.unit_identifier }} — {{ r.name }}: {{ r.phone }}</li>
+    {% else %}
+      <li>No contacts found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

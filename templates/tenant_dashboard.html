@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block page_styles %}
+  <link rel="stylesheet" href="/static/dashboard.css">
+{% endblock %}
+{% block content %}
+    <!-- TENANT VIEW -->
+    <div class="tenant-dashboard">
+      <div class="dashboard-header">
+        <h1>🏠 Explore Available Apartments</h1>
+        <p>Discover and book your ideal rental unit</p>
+      </div>
+
+      {% if available_units %}
+        <div class="units-grid">
+          {% set room_images = ['apt1.jpg', 'apt2.jpg', 'apt3.jpg', 'apt4.jpg'] %}
+          {% for item in available_units %}
+            {% set room_num = (item.unit.id - 1) % 4 %}
+            <div class="unit-card clickable" onclick="showRoomDetailsModal({{ item.unit.id }}, 'Room {{ room_num + 1 }}', '{{ room_images[room_num] }}', '{{ item.property_name }}', '{{ item.unit.property.address if item.unit.property else 'TBD' }}', {{ item.monthly_rent or 0 }})">
+              <div class="unit-image-wrapper">
+                <img src="/static/images/{{ room_images[room_num] }}" alt="Room {{ room_num + 1 }}" class="unit-image">
+                <div class="unit-status-overlay">✅ Available</div>
+              </div>
+              <div class="unit-info">
+                <h3>Room {{ room_num + 1 }}</h3>
+                <div class="unit-meta">
+                  <span class="property-name">🏢 {{ item.property_name }}</span>
+                </div>
+                <div class="unit-price">
+                  {% if item.monthly_rent %}
+                    <span class="price-display">₱{{ "%.2f"|format(item.monthly_rent) }}<span class="price-period">/month</span></span>
+                  {% else %}
+                    <span class="price-display">Contact for pricing</span>
+                  {% endif %}
+                </div>
+                <div class="unit-footer">
+                  <span class="view-details">View Details →</span>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="no-units">
+          <p>📭 No available units at the moment. Please check back later!</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Room Details & Booking Modal -->
+    <div id="roomDetailsModal" class="modal room-modal" aria-hidden="true">
+      <div class="modal-backdrop" data-modal-close></div>
+      <div class="modal-panel room-details-panel" role="dialog" aria-modal="true">
+        <button class="modal-close" data-modal-close aria-label="Close">×</button>
+        
+        <div class="modal-content">
+          <div class="room-image-section">
+            <img id="modalRoomImage" src="" alt="Room" class="room-detail-image">
+          </div>
+          
+          <div class="room-info-section">
+            <h2 id="modalRoomTitle"></h2>
+            <div class="room-info-grid">
+              <div class="info-item">
+                <span class="info-label">🏢 Property</span>
+                <span id="modalPropertyName" class="info-value"></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">📍 Location</span>
+                <span id="modalLocation" class="info-value"></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">💰 Monthly Rent</span>
+                <span id="modalRent" class="info-value rent-value"></span>
+              </div>
+            </div>
+
+            <div class="amenities-section">
+              <h4>✨ Amenities</h4>
+              <ul class="amenities-list">
+                <li>🛏️ Fully Furnished</li>
+                <li>💨 Air Conditioning</li>
+                <li>🚿 Private Bathroom</li>
+                <li>🌳 Garden Access</li>
+                <li>🔒 Security Features</li>
+                <li>📶 WiFi Compatible</li>
+              </ul>
+            </div>
+
+            <form id="bookingForm" method="post" action="/book-unit" class="booking-form">
+              <input type="hidden" id="unitId" name="unit_id">
+              
+              <h4>📅 Booking Details</h4>
+              <div class="form-group">
+                <label>Move-in Date:</label>
+                <input type="date" name="start_date" required class="form-input">
+              </div>
+              
+              <div class="form-group">
+                <label>Expected Move-out Date:</label>
+                <input type="date" name="end_date" required class="form-input">
+              </div>
+              
+              <div class="form-group">
+                <label>Special Requests or Questions:</label>
+                <textarea name="notes" placeholder="Tell us about any specific needs..." rows="3" class="form-input"></textarea>
+              </div>
+              
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-block">
+                  🔖 Submit Booking Request
+                </button>
+                <button type="button" class="btn btn-secondary btn-block" data-modal-close>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const roomModal = document.getElementById('roomDetailsModal');
+      const closeElements = roomModal.querySelectorAll('[data-modal-close]');
+
+      function openRoomModal() {
+        roomModal.classList.add('open');
+        roomModal.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeRoomModal() {
+        roomModal.classList.remove('open');
+        roomModal.setAttribute('aria-hidden', 'true');
+      }
+
+      closeElements.forEach(el => el.addEventListener('click', closeRoomModal));
+
+      function showRoomDetailsModal(unitId, roomTitle, imagePath, propertyName, location, rent) {
+        document.getElementById('unitId').value = unitId;
+        document.getElementById('modalRoomTitle').textContent = roomTitle;
+        document.getElementById('modalRoomImage').src = '/static/images/' + imagePath;
+        document.getElementById('modalPropertyName').textContent = propertyName;
+        document.getElementById('modalLocation').textContent = location;
+        document.getElementById('modalRent').textContent = '₱' + parseFloat(rent).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        openRoomModal();
+      }
+
+      document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        try {
+          const response = await fetch('/book-unit', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await response.json();
+          if (response.ok && data.ok) {
+            alert('✅ Booking request submitted! An admin will review and contact you soon.');
+            closeRoomModal();
+            location.reload();
+          } else {
+            alert('❌ ' + (data.message || 'Error submitting booking'));
+          }
+        } catch(err) {
+          alert('❌ Server error: ' + err.message);
+        }
+      });
+    </script>
+{% endblock %}

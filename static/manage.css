@@ -1,0 +1,195 @@
+/* ============================================================================
+   MANAGE.CSS - Manage page / Admin dashboard styles
+   ========================================================================== */
+
+.manage-page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.manage-page h2 {
+  color: #0066cc;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #0066cc;
+  padding-bottom: 12px;
+}
+
+.manage-page p {
+  color: #667788;
+  margin-bottom: 20px;
+}
+
+.manage-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.card-link {
+  background: #fff;
+  padding: 18px;
+  border-radius: 8px;
+  border: 1px solid #e6eef6;
+  text-decoration: none;
+  color: #213547;
+  min-width: 140px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(11, 107, 255, 0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: 500;
+}
+
+.card-link:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(11, 107, 255, 0.12);
+}
+
+/* Management sections */
+.manage-section {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.manage-section h2 {
+  color: #0066cc;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #0066cc;
+  padding-bottom: 12px;
+}
+
+.manage-section p {
+  margin-bottom: 20px;
+  color: #667788;
+}
+
+.data-table {
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e6eef6;
+  box-shadow: 0 2px 8px rgba(11, 107, 255, 0.04);
+  overflow: hidden;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.styled-table thead {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  color: #fff;
+}
+
+.styled-table thead th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #0052a3;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #e6eef6;
+  transition: background-color 0.2s ease;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f5f9ff;
+}
+
+.styled-table tbody td {
+  padding: 14px 16px;
+  color: #213547;
+}
+
+.styled-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-small {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.btn-danger {
+  color: #fff;
+  background: #e74c3c;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #c0392b;
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: #667788;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Maintenance page additions (status badges, wrapped descriptions) */
+.status-badge { display:inline-block; padding:6px 10px; border-radius:6px; font-weight:700; font-size:0.9em; }
+.status-completed { background:#2ecc71; color:#063; }
+.status-inprogress { background:#f1c40f; color:#663f00; }
+.status-pending, .status-open { background:#3498db; color:#042a4b; }
+.styled-table td { vertical-align: middle; }
+.styled-table { table-layout: fixed; width: 100%; }
+.styled-table td.description-col { max-width: 520px; white-space: normal; word-break: break-word; }
+
+/* Maintenance table uniform column layout */
+.manage-section .styled-table thead th:nth-child(1),
+.manage-section .styled-table tbody td:nth-child(1) {
+  width: 70px; /* Request ID */
+}
+.manage-section .styled-table thead th:nth-child(2),
+.manage-section .styled-table tbody td:nth-child(2) {
+  width: 140px; /* Unit */
+}
+.manage-section .styled-table thead th:nth-child(3),
+.manage-section .styled-table tbody td:nth-child(3) {
+  width: 48%; /* Description wider */
+}
+.manage-section .styled-table thead th:nth-child(4),
+.manage-section .styled-table tbody td:nth-child(4) {
+  width: 110px; /* Status */
+  text-align: center;
+}
+.manage-section .styled-table thead th:nth-child(5),
+.manage-section .styled-table tbody td:nth-child(5) {
+  width: 120px; /* Created */
+}
+.manage-section .styled-table thead th:nth-child(6),
+.manage-section .styled-table tbody td:nth-child(6) {
+  width: 140px; /* Actions */
+}
+
+.status-badge { min-width:56px; display:inline-flex; align-items:center; justify-content:center; padding:6px 10px; border-radius:6px; font-weight:700; font-size:0.85em; }
+.actions-cell { justify-content: flex-end; }
+
+/* Better small-screen behavior */
+@media (max-width: 900px) {
+  .manage-section .styled-table thead th, .manage-section .styled-table tbody td { display: table-cell; }
+  .manage-section .styled-table thead th:nth-child(1), .manage-section .styled-table tbody td:nth-child(1),
+  .manage-section .styled-table thead th:nth-child(2), .manage-section .styled-table tbody td:nth-child(2),
+  .manage-section .styled-table thead th:nth-child(4), .manage-section .styled-table tbody td:nth-child(4),
+  .manage-section .styled-table thead th:nth-child(5), .manage-section .styled-table tbody td:nth-child(5),
+  .manage-section .styled-table thead th:nth-child(6), .manage-section .styled-table tbody td:nth-child(6) {
+    width: auto;
+  }
+  .manage-section .styled-table thead th:nth-child(3), .manage-section .styled-table tbody td:nth-child(3) { width: auto; }
+  .actions-cell { justify-content: flex-start; gap: 6px; }
+}

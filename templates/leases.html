@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="manage-section">
+    <h2>📋 Manage Leases</h2>
+    <p><a class="btn btn-primary" href="/leases/new">➕ Create New Lease</a></p>
+    
+    <div class="data-table">
+      {% if leases %}
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Lease ID</th>
+              <th>Unit</th>
+              <th>Tenant</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Monthly Rent</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for l in leases %}
+              <tr>
+                <td>#{{ l.id }}</td>
+                <td>🏠 {{ l.unit.number if l.unit else l.unit_id }}</td>
+                <td>👤 {{ l.tenant.name if l.tenant else l.tenant_id }}</td>
+                <td>📅 {{ l.start_date }}</td>
+                <td>📅 {{ l.end_date }}</td>
+                <td>💰 ₱{{ '%.2f'|format(l.monthly_rent) if l.monthly_rent else '0.00' }}</td>
+                <td class="actions-cell">
+                  <a class="btn btn-small" href="/leases/{{ l.id }}/edit">✏️ Edit</a>
+                  <form action="/leases/{{ l.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this lease?');">
+                    <button type="submit" class="btn btn-danger btn-small">🗑️ Delete</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="empty-state">
+          <p>📭 No leases found yet.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

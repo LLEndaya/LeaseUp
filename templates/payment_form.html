@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Log Payment</h2>
+  <form method="post">
+    <label>Lease:
+      <select name="lease_id">
+        {% for l in leases %}
+          <option value="{{ l.id }}">#{{ l.id }} — Unit: {{ l.unit.number if l.unit else l.unit_id }} — Tenant: {{ l.tenant.name if l.tenant else l.tenant_id }}</option>
+        {% endfor %}
+      </select>
+    </label><br>
+    <label>Amount: <input name="amount" type="number" step="0.01" required></label><br>
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}

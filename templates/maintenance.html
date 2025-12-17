@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block page_styles %}
+  <link rel="stylesheet" href="/static/manage.css">
+{% endblock %}
+{% block content %}
+  <div class="manage-section">
+    <h2>🔧 Maintenance Requests</h2>
+    <p>
+      <a class="btn btn-primary" href="/maintenance/new">➕ Create Maintenance Request</a>
+    </p>
+    
+    <div class="data-table">
+      {% if reqs %}
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Unit</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in reqs %}
+              <tr>
+                <td>#{{ r.id }}</td>
+                <td>🏠 Unit {% if unit_map and unit_map.get(r.unit_id) %}{{ unit_map.get(r.unit_id).number }}{% else %}{{ r.unit_id }}{% endif %}</td>
+                <td class="description-col">{{ r.description }}</td>
+                <td>
+                  {% if r.status == 'completed' %}
+                    <span class="status-badge status-completed">Completed</span>
+                  {% elif r.status == 'in-progress' %}
+                    <span class="status-badge status-inprogress">In Progress</span>
+                  {% elif r.status == 'pending' %}
+                    <span class="status-badge status-pending">Pending</span>
+                  {% elif r.status == 'open' %}
+                    <span class="status-badge status-open">Open</span>
+                  {% else %}
+                    <span class="status-badge">{{ r.status }}</span>
+                  {% endif %}
+                </td>
+                <td>📅 {{ r.created_at.strftime('%Y-%m-%d') if r.created_at else 'N/A' }}</td>
+                <td class="actions-cell">
+                  <a class="btn btn-small" href="/maintenance/{{ r.id }}/edit">✏️ Edit</a>
+                  <form action="/maintenance/{{ r.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this request?');">
+                    <button type="submit" class="btn btn-danger btn-small">🗑️ Delete</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="empty-state">
+          <p>📭 No maintenance requests.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+

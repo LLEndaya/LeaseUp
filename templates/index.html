@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block page_styles %}
+  <link rel="stylesheet" href="/static/index.css">
+  <link rel="stylesheet" href="/static/login.css">
+{% endblock %}
+{% block content %}
+  <section class="landing container">
+    <div class="landing-grid">
+      <div class="landing-left">
+        <h1>LeaseUp</h1>
+        <p class="lead">A comprehensive rental property and tenant management system for tracking units, leases, payments, and maintenance requests.</p>
+        <ul class="features">
+          <li>Unit dashboard with real-time occupancy overview</li>
+          <li>Lease and payment tracking with balance reporting</li>
+          <li>Maintenance request management and emergency contacts</li>
+        </ul>
+        <p><a class="btn btn-primary" href="/features-preview">View Features</a></p>
+      </div>
+      <aside class="landing-right">
+        <div class="login-card">
+          <h3>Log In / Sign Up</h3>
+          <form method="post" action="/tenant-login">
+            <label>Username
+              <input name="username" required>
+            </label>
+            <label>Password
+              <input name="password" type="password" required>
+            </label>
+            <div class="actions">
+              <button class="btn btn-primary" type="submit">Log In</button>
+              <a class="btn btn-outline" href="/tenant-signup">Sign Up</a>
+              <button type="button" class="btn admin-btn admin-trigger" id="adminBtnHome">
+                <img src="/static/images/admin.jpg" alt="Admin" class="admin-img-small">
+              </button>
+            </div>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </section>
+  
+{% endblock %}

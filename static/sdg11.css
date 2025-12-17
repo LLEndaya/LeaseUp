@@ -1,0 +1,133 @@
+/* ============================================================================
+   SDG11.CSS - SDG 11 page styles
+   ========================================================================== */
+
+.sdg11-page h1 {
+  text-align: center;
+  color: #0f172a;
+  margin-bottom: 24px;
+  font-size: 2rem;
+}
+
+.sdg11-banner {
+  background: #f39c12;
+  color: #fff;
+  padding: 60px 20px;
+  margin: 0 0 40px 0;
+  text-align: center;
+}
+
+.sdg11-banner-content {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.sdg11-number {
+  font-size: 100px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+}
+
+.sdg11-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 15px 0 10px 0;
+  color: #fff;
+}
+
+.sdg11-subtitle {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #fff;
+  font-weight: 500;
+}
+
+.sdg11-intro {
+  background: #f39c12;
+  color: #fff;
+  padding: 60px 40px;
+  border-radius: 8px;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.sdg11-logo {
+  height: 15px;
+  width: 15px;
+  max-width: 15px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sdg11-intro p {
+  color: #fff;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.sdg11-content {
+  margin-top: 28px;
+}
+
+.sdg11-section {
+  margin-bottom: 28px;
+}
+
+.sdg11-section h2 {
+  color: #0b3a59;
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.sdg11-section p {
+  color: #213547;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.sdg11-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.sdg11-card {
+  background: #fff;
+  border: 1px solid #e6eef6;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(11, 107, 255, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sdg11-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(11, 107, 255, 0.15);
+}
+
+.sdg11-card h3 {
+  color: #0b6bff;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.sdg11-card p {
+  color: #213547;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 880px) {
+  .sdg11-intro {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .sdg11-page h1 {
+    font-size: 1.5rem;
+  }
+}

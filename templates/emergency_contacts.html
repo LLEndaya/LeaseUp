@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Emergency Contacts</h2>
+  <p><a href="/emergency-contacts/new">Add contact</a></p>
+  <ul>
+    {% for c in contacts %}
+      <li>{{ c.unit_identifier }} — {{ c.name }}: {{ c.phone }}
+        <a href="/emergency-contacts/{{ c.id }}/edit">Edit</a>
+        <form action="/emergency-contacts/{{ c.id }}/delete" method="post" style="display:inline">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    {% else %}
+      <li>No emergency contacts.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

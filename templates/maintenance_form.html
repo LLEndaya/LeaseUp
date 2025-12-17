@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{% if req %}Edit{% else %}Create{% endif %} Maintenance Request</h2>
+  <form method="post">
+    <label>Unit ID: <input name="unit_id" value="{{ req.unit_id if req else '' }}"></label><br>
+    <label>Description:<br>
+      <textarea name="description">{{ req.description if req else '' }}</textarea>
+    </label><br>
+    {% if req %}
+      <label>Status:
+        <select name="status">
+          <option value="open" {% if req.status=='open' %}selected{% endif %}>Open</option>
+          <option value="in_progress" {% if req.status=='in_progress' %}selected{% endif %}>In Progress</option>
+          <option value="closed" {% if req.status=='closed' %}selected{% endif %}>Closed</option>
+        </select>
+      </label><br>
+    {% endif %}
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}

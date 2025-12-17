@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{% if contact %}Edit{% else %}Add{% endif %} Emergency Contact</h2>
+  <form method="post">
+    <label>Unit identifier: <input name="unit_identifier" value="{{ contact.unit_identifier if contact else '' }}"></label><br>
+    <label>Name: <input name="name" value="{{ contact.name if contact else '' }}"></label><br>
+    <label>Phone: <input name="phone" value="{{ contact.phone if contact else '' }}"></label><br>
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}

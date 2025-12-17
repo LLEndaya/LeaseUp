@@ -1,0 +1,123 @@
+/* ============================================================================
+   FORMS.CSS - Shared form styles for all form pages
+   ========================================================================== */
+
+/* Forms */
+form input,
+form select,
+form textarea {
+  padding: 10px;
+  border: 1px solid #efe7dd;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+}
+
+form label {
+  display: block;
+  margin: 10px 0;
+  font-size: 0.95rem;
+}
+
+button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--primary-strong);
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  background: transparent;
+  color: var(--primary);
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: var(--primary-strong);
+}
+
+.btn:hover {
+  text-decoration: underline;
+}
+
+/* outline style for Sign Up button */
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid #cfdff5; /* same as admin button */
+  padding: 8px 14px; /* match Log In size */
+  border-radius: 8px; /* match admin button radius */
+  text-decoration: none;
+}
+
+.btn-outline:hover {
+  background: rgba(0,102,204,0.06);
+}
+
+.admin-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #cfdff5;
+  color: var(--primary);
+  border-radius: 8px;
+}
+
+.admin-img-small {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 4px;
+}
+
+/* Modal styles */
+.modal { display: none; }
+.modal.open { display: block; position: fixed; inset: 0; z-index: 1200; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(2,10,23,0.55); }
+.modal-panel { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; padding: 22px; border-radius: 10px; width: 420px; max-width: calc(100% - 32px); box-sizing: border-box; box-shadow: 0 12px 40px rgba(2,10,23,0.3); }
+.modal-close { position: absolute; right: 12px; top: 10px; background: transparent; border: none; font-size: 20px; cursor: pointer; }
+.modal-panel h3 { margin: 0 0 8px 0; color: var(--primary); }
+
+/* make modal inputs match login-card inputs */
+#adminModalPassword {
+  padding: 10px;
+  border: 1px solid #d7e6f8;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}

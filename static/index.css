@@ -1,0 +1,43 @@
+/* ============================================================================
+   INDEX.CSS - Landing page / Home page styles
+   ========================================================================== */
+
+.landing {
+  padding: 28px 0;
+}
+
+.landing-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: center;
+}
+
+/* Ensure no large full-width white band: keep landing background transparent
+   and constrain the visual white card to the login card only */
+.landing { background: transparent; }
+.landing-grid { background: transparent; padding: 6px 0; }
+
+.landing-left {
+  padding: 14px 8px;
+}
+
+.landing-left h1 { margin: 0 0 10px 0; }
+.landing-left .lead { margin-top: 6px; }
+
+.lead {
+  font-size: 1.05rem;
+  color: #213547;
+}
+
+.features { margin-top: 14px }
+.features li { margin: 8px 0 }
+
+.landing-right { padding: 8px 6px }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .landing-grid { grid-template-columns: 1fr; }
+  .landing-left { padding: 12px; }
+  .landing-right { padding: 12px; }
+}

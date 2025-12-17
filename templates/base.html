@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LeaseUp</title>
+    <!-- Base styles (global, header, footer) -->
+    <link rel="stylesheet" href="/static/base.css">
+    <!-- Utilities (lists, alerts) -->
+    <link rel="stylesheet" href="/static/utilities.css">
+    <!-- Forms and buttons -->
+    <link rel="stylesheet" href="/static/forms.css">
+    <!-- Page-specific styles -->
+    {% block page_styles %}{% endblock %}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand">
+          <img src="/static/images/logo.png" alt="logo" class="logo">
+          <div>
+            <div class="title">LeaseUp</div>
+            <div class="subtitle">Rental Property & Tenant Management</div>
+          </div>
+        </div>
+        <nav class="main-nav">
+          <a href="/">Home</a>
+          {% if current_user.is_authenticated %}
+            {% if current_user.__class__.__name__ == 'User' %}
+              <!-- Admin Navigation -->
+              <a href="/dashboard">Dashboard</a>
+              <a href="/manage">Manage</a>
+              <a href="/sdg11" class="sdg-link">SDG</a>
+              <a href="/emergency">Emergency</a>
+              <a href="/logout">Logout</a>
+            {% else %}
+              <!-- Tenant Navigation -->
+              <a href="/dashboard">Dashboard</a>
+              <a href="/sdg11" class="sdg-link">SDG</a>
+              <a href="/tenant-logout">Logout</a>
+            {% endif %}
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flashes">
+            {% for m in messages %}
+              <li>{{ m }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer">
+      <div class="footer-inner container">
+        <div class="footer-left">
+          <h3>Contact</h3>
+          <p>Batangas State University - TNEU</p>
+          <p>📍  <a href="https://maps.app.goo.gl/JD76ZRo2gsufPBn19" target="_blank"> A Tanco Dr, Maraouy, Lipa City, Batangas</a></p>
+          <p>📞 <a href="tel:+639359375216">+63 935 937 5216</a></p>
+          <p>📧 <a href="mailto:leaseup.ph@gmail.com">leaseup.ph@gmail.com</a></p>
+        </div>
+        <div class="footer-right">
+          <img src="/static/images/bsu.png" alt="bsu" class="footer-logo">
+          <img src="/static/images/cics.png" alt="cics" class="footer-logo">
+          <img src="/static/images/sdg11.png" alt="sdg" class="footer-logo">
+        </div>
+      </div>
+      <div class="footer-bottom container">© LeaseUp — Built for Sustainable Communities (SDG 11)</div>
+    </footer>
+    <!-- Admin modal (shared) -->
+    <div id="adminModal" class="modal" aria-hidden="true">
+      <div class="modal-backdrop" data-modal-close></div>
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
+        <button class="modal-close" data-modal-close aria-label="Close">×</button>
+        <h3 id="adminModalTitle">Admin Sign-in</h3>
+        <div id="adminModalMsg" class="muted" style="min-height:18px;"></div>
+        <input id="adminModalPassword" type="password" placeholder="Admin password" style="width:100%; padding:10px; margin-top:8px; border-radius:6px; border:1px solid #d7e6f8;">
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button class="btn btn-primary" id="adminModalSubmit">Log In</button>
+          <button class="btn" data-modal-close id="adminModalCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const modal = document.getElementById('adminModal');
+      const pwInput = document.getElementById('adminModalPassword');
+      const msg = document.getElementById('adminModalMsg');
+      const openButtons = document.querySelectorAll('.admin-trigger');
+      const closeElements = modal.querySelectorAll('[data-modal-close]');
+
+      function openModal(){ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); pwInput.value=''; msg.textContent=''; setTimeout(()=>pwInput.focus(),50); }
+      function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+
+      openButtons.forEach(b => b.addEventListener('click', function(e){ e.preventDefault(); openModal(); }));
+      closeElements.forEach(el => el.addEventListener('click', closeModal));
+
+      document.getElementById('adminModalSubmit').addEventListener('click', async function(){
+        const pw = pwInput.value || '';
+        try{
+          const res = await fetch('/admin-autologin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
+          const data = await res.json();
+          if(res.ok && data.ok){ window.location.href = data.redirect || '/manage'; }
+          else { msg.textContent = data.message || 'Incorrect password.'; }
+        } catch(err){ msg.textContent = 'Server error.'; }
+      });
+
+      pwInput.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); document.getElementById('adminModalSubmit').click(); } });
+    });
+    </script>
+  </body>
+</html>

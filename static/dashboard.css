@@ -1,0 +1,580 @@
+/* ============================================================================
+   DASHBOARD.CSS - Dashboard page styles
+   ========================================================================== */
+
+/* Admin Dashboard */
+.admin-dashboard h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  color: #0066cc;
+  border-bottom: 2px solid #0066cc;
+  padding-bottom: 8px;
+}
+
+.dashboard-section {
+  margin-bottom: 28px;
+  background: #fff;
+  padding: 18px;
+  border-radius: 8px;
+  border: 1px solid #e6eef6;
+  box-shadow: 0 2px 8px rgba(11, 107, 255, 0.04);
+}
+
+.info-card {
+  background: #f5f9ff;
+  padding: 16px;
+  border-radius: 6px;
+  border-left: 4px solid #0066cc;
+}
+
+.info-card ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.info-card li {
+  margin: 8px 0;
+  color: #213547;
+  line-height: 1.6;
+}
+
+/* Admin Unit Grid - align styling with tenant cards for consistent spacing */
+.unit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+  margin: 12px 0;
+}
+
+.unit-grid .unit-card {
+  background: #fff;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  position: relative;
+  padding: 0;
+}
+
+.unit-grid .unit-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 12px 32px rgba(0, 102, 204, 0.12);
+}
+
+.unit-grid .unit-card .unit-number {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #0066cc;
+  padding: 16px 20px 0 20px;
+}
+
+.unit-grid .unit-card .unit-status {
+  font-size: 0.95rem;
+  margin: 8px 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.unit-grid .unit-card.occupied {
+  background: #f6fff4;
+}
+
+.unit-grid .unit-card.vacant {
+  background: #fff;
+  color: #333;
+}
+
+.unit-grid .unit-card.overdue {
+  background: #fff6f6;
+}
+
+.unit-balance {
+  margin-top: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0 20px 16px 20px;
+}
+
+.unit-tenant {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 6px;
+  padding: 0 20px;
+}
+
+/* Tenant Dashboard */
+.tenant-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 40px;
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  padding: 40px 20px;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 102, 204, 0.2);
+}
+
+.dashboard-header h1 {
+  color: white;
+  margin: 0 0 8px 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.dashboard-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Room Grid */
+.units-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+  margin-top: 24px;
+}
+
+/* Room Cards - Tenant View */
+.units-grid .unit-card {
+  background: #fff;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 450px;
+}
+
+.units-grid .unit-card.clickable {
+  cursor: pointer;
+}
+
+.units-grid .unit-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 12px 32px rgba(0, 102, 204, 0.25);
+}
+
+.unit-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 220px;
+  flex-shrink: 0;
+}
+
+.unit-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.units-grid .unit-card:hover .unit-image {
+  transform: scale(1.08);
+}
+
+.unit-status-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+  z-index: 1;
+}
+
+.unit-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 8px;
+}
+
+.unit-info h3 {
+  margin: 0;
+  color: #0066cc;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.unit-meta {
+  flex-shrink: 0;
+}
+
+.property-name {
+  display: block;
+  color: #667788;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.unit-tenant {
+  display: block;
+  color: #555;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.unit-price {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-top: 8px;
+  min-height: 40px;
+  pointer-events: none;
+}
+
+.price-display {
+  color: #f39c12;
+  font-weight: 700;
+  font-size: 1.25rem;
+  display: block;
+  line-height: 1.3;
+}
+
+.price-period {
+  color: #667788;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: inline;
+  margin-left: 4px;
+}
+
+.unit-footer {
+  border-top: 1px solid #e6eef6;
+  padding-top: 12px;
+  margin-top: 8px;
+  text-align: right;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.view-details {
+  color: #0066cc;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+  display: inline-block;
+}
+
+.units-grid .unit-card:hover .view-details {
+  color: #0052a3;
+}
+
+.no-units {
+  text-align: center;
+  padding: 80px 20px;
+  color: #667788;
+  grid-column: 1 / -1;
+}
+
+.no-units p {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* Room Details Modal */
+.room-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.room-modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.room-details-panel {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.room-image-section {
+  background: linear-gradient(135deg, #f5f9ff 0%, #e8f1ff 100%);
+  padding: 0;
+  border-radius: 16px 0 0 16px;
+  overflow: hidden;
+}
+
+.room-detail-image {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  object-fit: cover;
+  display: block;
+}
+
+.room-info-section {
+  padding: 32px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: #f5f9ff;
+  font-size: 24px;
+  color: #0066cc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: #0066cc;
+  color: white;
+  transform: rotate(90deg);
+}
+
+.room-info-section h2 {
+  margin: 0 0 20px 0;
+  color: #0066cc;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.room-info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #f5f9ff;
+  border-radius: 8px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-label {
+  color: #667788;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.info-value {
+  color: #213547;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.rent-value {
+  color: #f39c12;
+  font-size: 1.2rem;
+}
+
+.amenities-section {
+  margin-bottom: 28px;
+}
+
+.amenities-section h4 {
+  color: #0066cc;
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.amenities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.amenities-list li {
+  color: #213547;
+  padding: 8px 0;
+  border-bottom: 1px solid #e6eef6;
+  font-size: 0.95rem;
+}
+
+.amenities-list li:last-child {
+  border-bottom: none;
+}
+
+.booking-form {
+  border-top: 2px solid #e6eef6;
+  padding-top: 24px;
+}
+
+.booking-form h4 {
+  color: #0066cc;
+  margin: 0 0 16px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #213547;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e6eef6;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-block {
+  width: 100%;
+  padding: 12px 16px;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary.btn-block {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  color: white;
+}
+
+.btn-primary.btn-block:hover {
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-secondary.btn-block {
+  background: #f5f9ff;
+  color: #0066cc;
+  border: 1px solid #0066cc;
+}
+
+.btn-secondary.btn-block:hover {
+  background: #e8f1ff;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .modal-content {
+    grid-template-columns: 1fr;
+  }
+
+  .room-image-section {
+    border-radius: 16px 16px 0 0;
+  }
+
+  .room-info-section {
+    padding: 24px;
+  }
+
+  .room-detail-image {
+    min-height: 250px;
+  }
+
+  .units-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .dashboard-header {
+    padding: 30px 20px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.8rem;
+  }
+}

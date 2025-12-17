@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="padding:30px 18px; max-width:900px;">
+  <h1 style="color:#0066cc;">Available Features:</h1>
+  <p class="lead">Explore what LeaseUp offers. Login to access full site.</p>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin-top:20px;">
+    <div class="card">
+      <h3>Unit Dashboard</h3>
+      <p>Visual occupancy grid, unit balances and alerts.</p>
+      {% if current_user.is_authenticated %}
+        <a class="btn btn-primary" href="/dashboard">Open</a>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h3>Lease & Payments</h3>
+      <p>Log leases, track payments and compute balances.</p>
+      {% if current_user.is_authenticated %}
+        <a class="btn btn-primary" href="/leases">Open</a>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h3>Tenant Management</h3>
+      <p>Create and manage tenant profiles and applications.</p>
+      {% if current_user.is_authenticated %}
+        <a class="btn btn-primary" href="/tenants">Open</a>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h3>Maintenance Requests</h3>
+      <p>Submit and manage maintenance issues.</p>
+      {% if current_user.is_authenticated %}
+        <a class="btn btn-primary" href="/maintenance">Open</a>
+      {% endif %}
+    </div>
+
+  </div>
+
+  {% if not current_user.is_authenticated %}
+  <div style="text-align:center; margin-top:22px;">
+    <a class="btn btn-primary" href="/tenant-login">Sign in to access features</a>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+.card{ background:#fff; border-radius:8px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.04);} 
+.card h3{ margin-top:0; color:#0052a3 }
+.card p{ color:#444; font-size:0.95rem }
+.card .btn{ margin-top:12px }
+</style>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{% if tenant %}Edit{% else %}Create{% endif %} Tenant</h2>
+  <form method="post">
+    <label>Name: <input name="name" value="{{ tenant.name if tenant else '' }}" required></label><br>
+    <label>Phone: <input name="phone" value="{{ tenant.phone if tenant else '' }}"></label><br>
+    <label>Email: <input name="email" value="{{ tenant.email if tenant else '' }}"></label><br>
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}

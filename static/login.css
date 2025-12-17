@@ -1,0 +1,43 @@
+/* ============================================================================
+   LOGIN.CSS - Login and authentication pages
+   ========================================================================== */
+
+.login-card {
+  background: #fff;
+  border: 1px solid #e6f0ff;
+  padding: 22px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,102,204,0.06);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* constrain login card so it doesn't create a wide band */
+.landing-right .login-card { max-width: 420px; margin-left: auto; }
+
+.login-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #213547;
+}
+
+.login-card label {
+  display: block;
+  margin: 10px 0;
+  font-size: 0.95rem;
+}
+
+.login-card input {
+  padding: 10px;
+  border: 1px solid #d7e6f8;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-card .actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}

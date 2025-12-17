@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block page_styles %}
+  <link rel="stylesheet" href="/static/manage.css">
+{% endblock %}
+{% block content %}
+  <div class="manage-page">
+    <h2>Property Management</h2>
+    <p>Access management features below:</p>
+    <div class="manage-links">
+      <a class="card-link" href="/tenants">Tenants</a>
+      <a class="card-link" href="/leases">Leases</a>
+      <a class="card-link" href="/payments">Payments</a>
+      <a class="card-link" href="/maintenance">Maintenance</a>
+      <a class="card-link" href="/booking-requests">Booking Requests</a>
+    </div>
+  </div>
+{% endblock %}

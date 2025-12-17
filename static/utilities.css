@@ -1,0 +1,20 @@
+/* ============================================================================
+   UTILITIES.CSS - Shared utilities, lists, and general styles
+   ========================================================================== */
+
+/* Lists */
+ul {
+  padding-left: 18px;
+}
+
+li {
+  margin-bottom: 6px;
+}
+
+/* Flashes / Alerts */
+.flashes {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+  color: #b33;
+}
